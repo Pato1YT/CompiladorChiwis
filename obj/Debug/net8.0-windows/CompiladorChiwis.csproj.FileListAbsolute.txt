@@ -1,0 +1,16 @@
+C:\Users\chano\source\repos\CompiladorChiwis\bin\Debug\net8.0-windows\CompiladorChiwis.exe
+C:\Users\chano\source\repos\CompiladorChiwis\bin\Debug\net8.0-windows\CompiladorChiwis.deps.json
+C:\Users\chano\source\repos\CompiladorChiwis\bin\Debug\net8.0-windows\CompiladorChiwis.runtimeconfig.json
+C:\Users\chano\source\repos\CompiladorChiwis\bin\Debug\net8.0-windows\CompiladorChiwis.dll
+C:\Users\chano\source\repos\CompiladorChiwis\bin\Debug\net8.0-windows\CompiladorChiwis.pdb
+C:\Users\chano\source\repos\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.Principal.resources
+C:\Users\chano\source\repos\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.csproj.GenerateResource.cache
+C:\Users\chano\source\repos\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\chano\source\repos\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.AssemblyInfoInputs.cache
+C:\Users\chano\source\repos\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.AssemblyInfo.cs
+C:\Users\chano\source\repos\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.csproj.CoreCompileInputs.cache
+C:\Users\chano\source\repos\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.dll
+C:\Users\chano\source\repos\CompiladorChiwis\obj\Debug\net8.0-windows\refint\CompiladorChiwis.dll
+C:\Users\chano\source\repos\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.pdb
+C:\Users\chano\source\repos\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.genruntimeconfig.cache
+C:\Users\chano\source\repos\CompiladorChiwis\obj\Debug\net8.0-windows\ref\CompiladorChiwis.dll
