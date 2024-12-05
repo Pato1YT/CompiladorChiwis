@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\chano\\source\\repos\\CompiladorChiwis\\CompiladorChiwis.csproj",
+      "projectUniqueName": "C:\\Users\\chano\\OneDrive\\Escritorio\\COMPILADOR CHIWIS\\CompiladorChiwis\\CompiladorChiwis.csproj",
       "projectName": "CompiladorChiwis",
-      "projectPath": "C:\\Users\\chano\\source\\repos\\CompiladorChiwis\\CompiladorChiwis.csproj",
+      "projectPath": "C:\\Users\\chano\\OneDrive\\Escritorio\\COMPILADOR CHIWIS\\CompiladorChiwis\\CompiladorChiwis.csproj",
       "packagesPath": "C:\\Users\\chano\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\chano\\source\\repos\\CompiladorChiwis\\obj\\",
+      "outputPath": "C:\\Users\\chano\\OneDrive\\Escritorio\\COMPILADOR CHIWIS\\CompiladorChiwis\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\chano\\AppData\\Roaming\\NuGet\\NuGet.Config",

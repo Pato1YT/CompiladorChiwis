@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
-            label1 = new Label();
-            button1 = new Button();
             textBox1 = new TextBox();
+            button1 = new Button();
+            label1 = new Label();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -46,15 +46,15 @@
             panel1.Size = new Size(763, 499);
             panel1.TabIndex = 0;
             // 
-            // label1
+            // textBox1
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Britannic Bold", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(271, 25);
-            label1.Name = "label1";
-            label1.Size = new Size(208, 44);
-            label1.TabIndex = 0;
-            label1.Text = "Hacer Test";
+            textBox1.Location = new Point(29, 134);
+            textBox1.Multiline = true;
+            textBox1.Name = "textBox1";
+            textBox1.ScrollBars = ScrollBars.Vertical;
+            textBox1.Size = new Size(714, 259);
+            textBox1.TabIndex = 2;
+            textBox1.TextChanged += textBox1_TextChanged;
             // 
             // button1
             // 
@@ -65,15 +65,17 @@
             button1.TabIndex = 1;
             button1.Text = "Compilar";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
-            // textBox1
+            // label1
             // 
-            textBox1.Location = new Point(29, 134);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.ScrollBars = ScrollBars.Vertical;
-            textBox1.Size = new Size(714, 259);
-            textBox1.TabIndex = 2;
+            label1.AutoSize = true;
+            label1.Font = new Font("Britannic Bold", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Location = new Point(271, 25);
+            label1.Name = "label1";
+            label1.Size = new Size(208, 44);
+            label1.TabIndex = 0;
+            label1.Text = "Hacer Test";
             // 
             // Principal
             // 
