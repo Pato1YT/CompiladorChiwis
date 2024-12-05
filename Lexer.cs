@@ -11,20 +11,19 @@ namespace CompiladorChiwis
     {
         private static readonly Dictionary<string, string> TokenPatterns = new()
         {
-            { "MainMethod", @"^\s*main\s*\(\s*\)\s*\{?" },
+            { "MainMethod", @"^\s*main\s*\(\s*\)\s*\*?" },
             { "OpenBrace", @"\{" },
             { "CloseBrace", @"\}" },
-            { "VariableDeclaration", @"\s*(ent|cad|flot|sn|let)\s+[a-zA-Z_][a-zA-Z0-9_]*\s*(=\s*[^;]+)?;" },
+            { "VariableDeclaration", @"\s*(ent|cad|flot|sn|let)\s+[a-zA-Z_][a-zAZ0-9_]*\s*(=\s*[^;]+)?;" },
             { "ListDeclaration", @"\s*list\s+[a-zA-Z_][a-zA-Z0-9_]*\s*\[.*\];" },
             { "Input", @"\s*kiara\.entrada\([a-zA-Z_][a-zA-Z0-9_]*\)\s*;" },
             { "Output", @"\s*kiara\.salida\([^\)]+\)\s*;" },
-            { "IfStatement", @"\s*Si\s*\([^\)]+\)\s*\{?" },
-            { "ElseStatement", @"\s*\}?\s*No\s*\{?" },
-            { "ForLoop", @"\s*para\s*\(.*\)\s*\{" },
-            { "Comment", @"~.*~" },
+            { "IfStatement", @"\s*Si\s*\([^\)]+\)\s*\*?" },
+            { "ElseStatement", @"\s*\}?\s*No\s*\*?" },
+            { "ForLoop", @"\s*para\s*\(.*\)\s*\*?" },
+            { "Comment", @"~\s*.*\s*~" },
             { "Whitespace", @"\s+" }
         };
-
 
         public List<(string TokenType, string Value)> Tokenize(string code)
         {

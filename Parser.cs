@@ -10,6 +10,7 @@ namespace CompiladorChiwis
     {
         private readonly List<(string TokenType, string Value)> tokens;
         private int currentIndex = 0;
+        private int openBracesCount = 0; // Contador de llaves abiertas
 
         public Parser(List<(string TokenType, string Value)> tokens)
         {
@@ -41,13 +42,20 @@ namespace CompiladorChiwis
                     throw new Exception($"Error inesperado en el token {CurrentToken.Value}");
                 }
             }
+
+            // Al final, las llaves abiertas deben estar balanceadas
+            if (openBracesCount != 0)
+            {
+                throw new Exception("Error de sintaxis: las llaves no están balanceadas.");
+            }
         }
 
         private void ParseBlock()
         {
             if (CurrentToken.TokenType == "OpenBrace")
             {
-                Consume("OpenBrace"); // Consume la llave de apertura
+                Consume("OpenBrace");
+                openBracesCount++; // Contar la llave de apertura
             }
             else
             {
@@ -91,13 +99,19 @@ namespace CompiladorChiwis
 
             if (CurrentToken.TokenType == "CloseBrace")
             {
-                Consume("CloseBrace"); // Consume la llave de cierre
+                Consume("CloseBrace");
+                openBracesCount--; // Contar la llave de cierre
             }
             else
             {
                 throw new Exception($"Error de sintaxis: se esperaba CloseBrace, pero se encontró {CurrentToken.TokenType}");
             }
-        }
 
+            // Verifica si las llaves se han balanceado al final del bloque
+            if (openBracesCount < 0)
+            {
+                throw new Exception("Error de sintaxis: llave de cierre sin llave de apertura correspondiente.");
+            }
+        }
     }
 }

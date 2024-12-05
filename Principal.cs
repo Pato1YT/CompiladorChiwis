@@ -9,7 +9,7 @@ namespace CompiladorChiwis
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-
+            // Este método no está siendo utilizado, lo puedes mantener vacío o implementarlo si lo deseas
         }
 
         public void validarCodigo()
@@ -37,7 +37,6 @@ namespace CompiladorChiwis
             {
                 MessageBox.Show($"Error: {ex.Message}");
             }
-
         }
 
         private void button1_Click(object sender, EventArgs e)
