@@ -64,6 +64,13 @@ namespace CompiladorChiwis
 
             while (CurrentToken.TokenType != "CloseBrace" && CurrentToken.TokenType != "EOF")
             {
+                // Ignorar los comentarios
+                if (CurrentToken.TokenType == "Comment")
+                {
+                    Consume("Comment");  // Ignorar el comentario
+                    continue;  // Continuar con el siguiente token
+                }
+
                 if (CurrentToken.TokenType == "VariableDeclaration")
                 {
                     Consume("VariableDeclaration");
@@ -113,5 +120,6 @@ namespace CompiladorChiwis
                 throw new Exception("Error de sintaxis: llave de cierre sin llave de apertura correspondiente.");
             }
         }
+
     }
 }
