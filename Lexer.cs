@@ -14,8 +14,8 @@ namespace CompiladorChiwis
             { "MainMethod", @"^\s*main\s*\(\s*\)\s*\*?" },
             { "OpenBrace", @"\{" },
             { "CloseBrace", @"\}" },
-            { "VariableEnt", @"\s*ent\s+(?!ent\b|cad\b|flot\b|sn\b|let\b)[a-zA-Z_][a-zA-Z0-9_]*\s*(=\s*\d+\s*)?;"},//falta validar signos aritmeticos
-            { "DeclarationFlot",@"\s*flot\s+(?!ent\b|cad\b|flot\b|sn\b|let\b|para\b|Si\b|No\b|True\b|False\b|kiara\b)[a-zA-Z_][a-zA-Z0-9_]*\s*(=\s*\d+\.?d+)?;"},//falta validar signos aritmeticos
+            { "VariableEnt", @"\s*ent\s+(?!ent\b|cad\b|flot\b|sn\b|let\b|para\b|Si\b|No\b|True\b|False\b|kiara\b)[a-zA-Z_][a-zA-Z0-9_]*\s*(=\s*-?\d+(\s*[\+\-\*/%]\s*-?\d+)*\s*)?;"},//Valida operaciones
+            { "DeclarationFlot",@"\s*flot\s+(?!ent\b|cad\b|flot\b|sn\b|let\b|para\b|Si\b|No\b|True\b|False\b|kiara\b)[a-zA-Z_][a-zA-Z0-9_]*\s*(=\s*-?\d+(\.\d+)?(\s*[\+\-\*/%]\s*-?\d+(\.\d+)?)*)?;"},//falta validar signos aritmeticos
             { "DeclarationCad", @"\s*cad\s+(?!ent\b|cad\b|flot\b|sn\b|let\b|para\b|Si\b|No\b|True\b|False\b|kiara\b)[a-zA-Z_][a-zA-Z0-9_]*\s*(=\s*"".*""\s*)?;"},//Ya valida
             { "DeclarationSn", @"\s*sn\s+(?!ent\b|cad\b|flot\b|sn\b|let\b|para\b|Si\b|No\b|True\b|False\b|kiara\b)[a-zA-Z_][a-zA-Z0-9_]*\s*(=\s*True|False\s*)?;"},//Validado
             { "DeclarationLet", @"\s*let\s+(?!ent\b|cad\b|flot\b|sn\b|let\b|para\b|Si\b|No\b|True\b|False\b|kiara\b)[a-zA-Z_][a-zA-Z0-9_]*\s*(=\s*"".""\s*)?;"},//Validado
