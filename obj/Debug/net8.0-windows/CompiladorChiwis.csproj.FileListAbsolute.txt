@@ -31,3 +31,20 @@ C:\Users\chano\OneDrive\Escritorio\COMPILADOR CHIWIS\CompiladorChiwis\bin\Debug\
 C:\Users\chano\OneDrive\Escritorio\COMPILADOR CHIWIS\CompiladorChiwis\bin\Debug\net8.0-windows\CompiladorChiwis.pdb
 C:\Users\chano\OneDrive\Escritorio\COMPILADOR CHIWIS\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.genruntimeconfig.cache
 C:\Users\chano\OneDrive\Escritorio\COMPILADOR CHIWIS\CompiladorChiwis\obj\Debug\net8.0-windows\ref\CompiladorChiwis.dll
+C:\Users\43leo\OneDrive\Escritorio\Tecnologíco\SEMESTRE_5\Lenguajes_Automatas\CompiladorChiwis\bin\Debug\net8.0-windows\CompiladorChiwis.exe
+C:\Users\43leo\OneDrive\Escritorio\Tecnologíco\SEMESTRE_5\Lenguajes_Automatas\CompiladorChiwis\bin\Debug\net8.0-windows\CompiladorChiwis.deps.json
+C:\Users\43leo\OneDrive\Escritorio\Tecnologíco\SEMESTRE_5\Lenguajes_Automatas\CompiladorChiwis\bin\Debug\net8.0-windows\CompiladorChiwis.runtimeconfig.json
+C:\Users\43leo\OneDrive\Escritorio\Tecnologíco\SEMESTRE_5\Lenguajes_Automatas\CompiladorChiwis\bin\Debug\net8.0-windows\CompiladorChiwis.dll
+C:\Users\43leo\OneDrive\Escritorio\Tecnologíco\SEMESTRE_5\Lenguajes_Automatas\CompiladorChiwis\bin\Debug\net8.0-windows\CompiladorChiwis.pdb
+C:\Users\43leo\OneDrive\Escritorio\Tecnologíco\SEMESTRE_5\Lenguajes_Automatas\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.Principal.resources
+C:\Users\43leo\OneDrive\Escritorio\Tecnologíco\SEMESTRE_5\Lenguajes_Automatas\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.csproj.GenerateResource.cache
+C:\Users\43leo\OneDrive\Escritorio\Tecnologíco\SEMESTRE_5\Lenguajes_Automatas\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\43leo\OneDrive\Escritorio\Tecnologíco\SEMESTRE_5\Lenguajes_Automatas\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.AssemblyInfoInputs.cache
+C:\Users\43leo\OneDrive\Escritorio\Tecnologíco\SEMESTRE_5\Lenguajes_Automatas\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.AssemblyInfo.cs
+C:\Users\43leo\OneDrive\Escritorio\Tecnologíco\SEMESTRE_5\Lenguajes_Automatas\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.csproj.CoreCompileInputs.cache
+C:\Users\43leo\OneDrive\Escritorio\Tecnologíco\SEMESTRE_5\Lenguajes_Automatas\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.sourcelink.json
+C:\Users\43leo\OneDrive\Escritorio\Tecnologíco\SEMESTRE_5\Lenguajes_Automatas\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.dll
+C:\Users\43leo\OneDrive\Escritorio\Tecnologíco\SEMESTRE_5\Lenguajes_Automatas\CompiladorChiwis\obj\Debug\net8.0-windows\refint\CompiladorChiwis.dll
+C:\Users\43leo\OneDrive\Escritorio\Tecnologíco\SEMESTRE_5\Lenguajes_Automatas\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.pdb
+C:\Users\43leo\OneDrive\Escritorio\Tecnologíco\SEMESTRE_5\Lenguajes_Automatas\CompiladorChiwis\obj\Debug\net8.0-windows\CompiladorChiwis.genruntimeconfig.cache
+C:\Users\43leo\OneDrive\Escritorio\Tecnologíco\SEMESTRE_5\Lenguajes_Automatas\CompiladorChiwis\obj\Debug\net8.0-windows\ref\CompiladorChiwis.dll

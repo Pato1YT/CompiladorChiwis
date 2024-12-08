@@ -71,9 +71,34 @@ namespace CompiladorChiwis
                     continue;  // Continuar con el siguiente token
                 }
 
-                if (CurrentToken.TokenType == "VariableDeclaration")
+                if (CurrentToken.TokenType == "VariableEnt")
                 {
-                    Consume("VariableDeclaration");
+                    Consume("VariableEnt");
+                }
+
+                if (CurrentToken.TokenType == "DeclarationFlot")
+                {
+                    Consume("DeclarationFlot");
+                }
+
+                if (CurrentToken.TokenType =="DeclarationSn")
+                {
+                    Consume("DeclarationSn");
+                }
+
+                if (CurrentToken.TokenType == "DeclarationCad")
+                {
+                    Consume("DeclarationCad");
+                }
+
+                if (CurrentToken.TokenType == "DeclarationLet")
+                {
+                    Consume("DeclarationLet");
+                }
+
+                if (CurrentToken.TokenType == "ListDeclaration")
+                {
+                    Consume("ListDeclaration");
                 }
                 else if (CurrentToken.TokenType == "Input")
                 {
