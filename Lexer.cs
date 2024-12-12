@@ -29,39 +29,7 @@ namespace CompiladorChiwis
             { "Whitespace", @"\s+" }
         };
 
-        /*
-        public List<(string TokenType, string Value)> Tokenize(string code)
-        {
-            var tokens = new List<(string, string)>();
-            int index = 0;
-
-            while (index < code.Length)
-            {
-                bool matched = false;
-
-                foreach (var (type, pattern) in TokenPatterns)
-                {
-                    var match = Regex.Match(code.Substring(index), pattern);
-
-                    if (match.Success && match.Index == 0)
-                    {
-                        if (type != "Whitespace") // Ignorar espacios
-                            tokens.Add((type, match.Value.Trim()));
-
-                        index += match.Length;
-                        matched = true;
-                        break;
-                    }
-                }
-
-                if (!matched)
-                    throw new Exception($"Error léxico en posición {index}: {code.Substring(index, Math.Min(20, code.Length - index))}");
-
-            }
-
-            return tokens;
-        }
-        */
+    
 
         public List<(string TokenType, string Value)> Tokenize(string code)
         {

@@ -76,27 +76,27 @@ namespace CompiladorChiwis
                     Consume("VariableEnt");
                 }
 
-                if (CurrentToken.TokenType == "DeclarationFlot")
+                else if (CurrentToken.TokenType == "DeclarationFlot")
                 {
                     Consume("DeclarationFlot");
                 }
 
-                if (CurrentToken.TokenType =="DeclarationSn")
+                else if (CurrentToken.TokenType =="DeclarationSn")
                 {
                     Consume("DeclarationSn");
                 }
 
-                if (CurrentToken.TokenType == "DeclarationCad")
+                else if (CurrentToken.TokenType == "DeclarationCad")
                 {
                     Consume("DeclarationCad");
                 }
 
-                if (CurrentToken.TokenType == "DeclarationLet")
+                else if (CurrentToken.TokenType == "DeclarationLet")
                 {
                     Consume("DeclarationLet");
                 }
 
-                if (CurrentToken.TokenType == "ListDeclaration")
+                else if (CurrentToken.TokenType == "ListDeclaration")
                 {
                     Consume("ListDeclaration");
                 }
