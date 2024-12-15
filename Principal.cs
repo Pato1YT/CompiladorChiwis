@@ -41,8 +41,15 @@ namespace CompiladorChiwis
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
-            validarCodigo();
+            if (!string.IsNullOrWhiteSpace(textBox1.Text))//Valida que haya codigo en el compilador
+            {
+                validarCodigo();
+            }
+            else
+            {
+                MessageBox.Show("Error: No existe código");
+            }
+
         }
     }
 }

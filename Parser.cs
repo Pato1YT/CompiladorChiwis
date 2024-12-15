@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CompiladorChiwis
@@ -81,7 +82,7 @@ namespace CompiladorChiwis
                     Consume("DeclarationFlot");
                 }
 
-                else if (CurrentToken.TokenType =="DeclarationSn")
+                else if (CurrentToken.TokenType == "DeclarationSn")
                 {
                     Consume("DeclarationSn");
                 }
@@ -110,8 +111,16 @@ namespace CompiladorChiwis
                 }
                 else if (CurrentToken.TokenType == "IfStatement")
                 {
+                    string condition = ExtractCondition(CurrentToken.Value);
+
+                    // Validar la condición
+                    ValidateIfCondition(condition);
+
+                    // Consumir el token del `Si`
                     Consume("IfStatement");
-                    ParseBlock(); // Procesa el bloque del `Si`
+
+                    // Procesar el bloque del `Si`
+                    ParseBlock();
                     if (CurrentToken.TokenType == "ElseStatement")
                     {
                         Consume("ElseStatement");
@@ -145,6 +154,110 @@ namespace CompiladorChiwis
                 throw new Exception("Error de sintaxis: llave de cierre sin llave de apertura correspondiente.");
             }
         }
+
+        private void ValidateIfCondition(string condition)
+        {
+            // Lista de palabras reservadas
+            HashSet<string> reservedWords = new()
+            {
+              "ent", "cad", "flot", "sn", "let", "para", "Si", "No", "True", "False", "kiara", "list"
+            };
+
+            // Separar por operadores lógicos y relacionales
+            string[] parts = Regex.Split(condition, @"(==|!=|<|>|<=|>=|&&|\|\|)").Where(p => !string.IsNullOrWhiteSpace(p)).ToArray();
+
+            // Validar si hay una sola  
+            if (parts.Length == 1)
+            {
+                string part = parts[0].Trim();
+
+                // Verificar que no sea una palabra reservada
+                if (reservedWords.Contains(part))
+                {
+                    throw new Exception($"Error sintáctico: La palabra reservada '{part}' no puede usarse como operando en la condición '{condition}'");
+                }
+
+                // Validar que sea un identificador válido
+                if (!Regex.IsMatch(part, @"^([a-zA-Z_][a-zA-Z0-9_]*)$"))
+                {
+                    throw new Exception($"Error sintáctico: Operando inválido '{part}' en la condición '{condition}'");
+                }
+
+                // Si es válido, salir del método
+                return;
+            }
+
+            // Si hay más de una parte, validar operadores y operandos
+            for (int i = 0; i < parts.Length; i++)
+            {
+                string part = parts[i].Trim();
+
+                if (i % 2 == 0) // Operandos (en posiciones pares)
+                {
+                    // Verificar que no sea una palabra reservada
+                    if (reservedWords.Contains(part))
+                    {
+                        throw new Exception($"Error sintáctico: La palabra reservada '{part}' no puede usarse como operando en la condición '{condition}'");
+                    }
+
+                    // Validar que sea un identificador válido, un número, o un string
+                    if (!Regex.IsMatch(part, @"^([a-zA-Z_][a-zA-Z0-9_]*|\d+|\"".*\"")$"))
+                    {
+                        throw new Exception($"Error sintáctico: Operando inválido '{part}' en la condición '{condition}'");
+                    }
+                }
+                else // Operadores (en posiciones impares)
+                {
+                    // Validar que sea un operador válido
+                    if (!Regex.IsMatch(part, @"^(==|!=|<|>|<=|>=|&&|\|\|)$"))
+                    {
+                        throw new Exception($"Error sintáctico: Operador inválido '{part}' en la condición '{condition}'");
+                    }
+                }
+            }
+
+            // Verificar que la condición empiece y termine con un operando
+            if (!Regex.IsMatch(parts[0].Trim(), @"^([a-zA-Z_][a-zA-Z0-9_]*|\d+|\"".*\"")$") ||
+                !Regex.IsMatch(parts[^1].Trim(), @"^([a-zA-Z_][a-zA-Z0-9_]*|\d+|\"".*\"")$"))
+            {
+                throw new Exception($"Error sintáctico: La condición del `Si` debe comenzar y terminar con un operando válido: '{condition}'");
+            }
+        }
+
+
+        private string ExtractCondition(string ifStatement)
+        {
+            var match = Regex.Match(ifStatement, @"Si\s*\((.*)\)");
+            if (!match.Success)
+            {
+                throw new Exception($"Error sintáctico: No se pudo extraer la condición del `Si`: '{ifStatement}'");
+            }
+            return match.Groups[1].Value.Trim();
+        }
+
+        private void ValidateVariable(string variable)
+        {
+            // Lista de palabras reservadas
+            HashSet<string> reservedWords = new()
+            {
+              "ent", "cad", "flot", "sn", "let", "para", "Si", "No", "True", "False", "kiara", "list"
+            };
+
+            // Validar que no sea una palabra reservada
+            if (reservedWords.Contains(variable))
+            {
+                throw new Exception($"Error sintáctico: La palabra reservada '{variable}' no puede usarse como identificador.");
+            }
+
+            // Validar que sea un identificador válido
+            if (!Regex.IsMatch(variable, @"^[a-zA-Z_][a-zA-Z0-9_]*$"))
+            {
+                throw new Exception($"Error sintáctico: Identificador inválido '{variable}'.");
+            }
+        }
+
+
+
 
     }
 }

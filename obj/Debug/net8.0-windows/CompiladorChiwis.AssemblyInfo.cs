@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CompiladorChiwis")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d71b405b2af98be53439a3d0ca39e721de30c032")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+92f9e789c53df6edf40c589d0747d477c761d53a")]
 [assembly: System.Reflection.AssemblyProductAttribute("CompiladorChiwis")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CompiladorChiwis")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
