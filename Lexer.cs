@@ -25,7 +25,7 @@ namespace CompiladorChiwis
             { "Output", @"\s*kiara\.salida\([^\)]+\)\s*;" },
             { "IfStatement", @"\s*Si\s*\((.*)\)\s*" },
             { "ElseStatement", @"\s*No\s*" },
-            { "ForLoop", @"\s*para\s*\(.*\)\s*\*?" },
+            { "ForLoop", @"para\s*\((.*)\)\s*"},
             { "Comment", @"\~.*\~" },
             { "Whitespace", @"\s+" }
         };

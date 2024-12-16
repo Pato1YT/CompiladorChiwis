@@ -135,9 +135,9 @@ namespace CompiladorChiwis
                 }
                 else if (CurrentToken.TokenType == "ForLoop")
                 {
-                    string loopCondition = CurrentToken.Value;
-                    ValidateForLoop(loopCondition);
-                    Consume("ForLoop");
+                    string forLoopCondition =CurrentToken.Value; // Extrae la condición del ciclo
+                    ValidateForLoop(forLoopCondition);
+                    Consume("ForLoop");                 
                     ParseBlock(); // Procesa el bloque del `para`
                 }
                 else
@@ -259,7 +259,7 @@ namespace CompiladorChiwis
             }
             return match.Groups[1].Value.Trim();
         }
-
+    
         private void ValidarSalida(string condicion)
         {
             // Lista de palabras reservadas
@@ -337,127 +337,126 @@ namespace CompiladorChiwis
             }
         }
         //NO SIRVE 
-        private void ValidateForLoop(string loopCondition)
+        private void ValidateForLoop(string forLoop)
         {
-            // Dividir la condición completa del ciclo en inicialización, condición y actualización
-            string pattern = @"^\s*(?<init>[^;]+);\s*(?<cond>[^;]+);\s*(?<update>.+)\s*$";
-            Match match = Regex.Match(loopCondition, pattern);
-
+            // Expresión regular para extraer la parte entre los paréntesis del ciclo `para()`
+            var match = Regex.Match(forLoop, @"para\s*\((.*)\)");
             if (!match.Success)
             {
-                throw new Exception($"Error de sintaxis: la declaración del ciclo 'para' es inválida: {loopCondition}");
+                throw new Exception($"Error sintáctico: No se pudo extraer la condición del ciclo `Para`: '{forLoop}'");
             }
 
-            string initialization = match.Groups["init"].Value.Trim();
-            string condition = match.Groups["cond"].Value.Trim();
-            string update = match.Groups["update"].Value.Trim();
+            string condition = match.Groups[1].Value.Trim();
 
-            // Crear un diccionario local para rastrear variables dentro del ciclo
-            Dictionary<string, string> localVariables = new();
+            // Separamos la condición en tres partes: declaración, condición e incremento
+            string[] parts = Regex.Split(condition, @"\s*;\s*")
+                                   .Where(p => !string.IsNullOrWhiteSpace(p))
+                                   .ToArray();
 
-            // Validar la inicialización
-            ValidateInitialization(initialization, localVariables);
+            // Verificamos que hay exactamente tres partes: declaración, condición e incremento
+            if (parts.Length != 3)
+            {
+                throw new Exception($"Error sintáctico: La estructura del ciclo `Para` no es válida: '{forLoop}'");
+            }
 
-            // Validar la condición
-            ValidateCondition(condition, localVariables);
-
-            // Validar el incremento/decremento
-            ValidateIncrementDecrement(update, localVariables);
+            // Validamos cada parte del ciclo: declaración, condición, incremento
+            ValidateForLoopDeclaration(parts[0]);
+            ValidateForLoopCondition(parts[1]);
+            ValidateForLoopIncrement(parts[2]);
         }
 
-
-
-        private void ValidateInitialization(string initialization, Dictionary<string, string> localVariables)
+        // Validar la declaración en el ciclo `Para`
+        private void ValidateForLoopDeclaration(string declaration)
         {
-            HashSet<string> reservedWords = new()
-            {
-              "ent", "cad", "flot", "sn", "let", "para", "Si", "No", "True", "False", "kiara", "list"
-            };
-            // Expresión regular para la inicialización, ejemplo: "ent i = 1"
-            Regex initRegex = new(@"^(ent)\s+(\w+)\s*=\s*(-?\d+)$");
-            Match match = initRegex.Match(initialization);
+            // Expresión regular para validar la declaración 'ent x = 0;'
+            string pattern = @"\s*(ent)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(\d+)\s*";
+            var match = Regex.Match(declaration, pattern);
 
             if (!match.Success)
             {
-                throw new Exception($"Error de sintaxis en la inicialización: {initialization}");
+                throw new Exception($"Error sintáctico: La declaración del ciclo `para` no es válida: '{declaration}'");
             }
 
-            string type = match.Groups[1].Value;
             string variableName = match.Groups[2].Value;
+            string value = match.Groups[3].Value;
 
-            // Verificar que el nombre de la variable no sea una palabra reservada
-            if (reservedWords.Contains(variableName))
+            // Validar que el nombre de la variable no sea una palabra reservada
+            if (IsReservedWord(variableName))
             {
-                throw new Exception($"Error: el nombre de la variable '{variableName}' es una palabra reservada.");
+                throw new Exception($"Error semántico: La variable '{variableName}' no puede ser una palabra reservada.");
             }
 
-            // Registrar la variable localmente
-            localVariables[variableName] = type;
+            // Validar que el valor sea un número
+            if (!int.TryParse(value, out _))
+            {
+                throw new Exception($"Error semántico: El valor '{value}' en la declaración no es un número válido.");
+            }
         }
 
+        // Validar la condición del ciclo `Para`
+        private void ValidateForLoopCondition(string condition)
+        {
+            condition = Regex.Replace(condition, @"\s+", " ").Trim();
 
-        private void ValidateCondition(string condition, Dictionary<string, string> localVariables)
+            string[] parts = Regex.Split(condition, @"\b(<=|>=|==|!=|<|>)\b")
+                                   .Where(p => !string.IsNullOrWhiteSpace(p))
+                                   .ToArray();
+
+            if (parts.Length != 3)
+            {
+                throw new Exception($"Error sintáctico: La condición del ciclo `Para` no es válida: '{condition}'");
+            }
+
+            string leftOperand = parts[0].Trim();
+            string operatorPart = parts[1].Trim();
+            string rightOperand = parts[2].Trim();
+
+            // Validar los operandos
+            ValidateForLoopOperand(leftOperand);
+            ValidateForLoopOperand(rightOperand);
+
+            // Validar el operador
+            if (!Regex.IsMatch(operatorPart, @"^(==|!=|<|>|<=|>=)$"))
+            {
+                throw new Exception($"Error sintáctico: El operador '{operatorPart}' no es válido en la condición: '{condition}'");
+            }
+        }
+
+        // Validar los operandos en la condición del ciclo `Para`
+        private void ValidateForLoopOperand(string operand)
+        {
+            // Si el operando es una palabra reservada, se lanza un error semántico
+            if (IsReservedWord(operand))
+            {
+                throw new Exception($"Error semántico: El operando '{operand}' no puede ser una palabra reservada.");
+            }
+
+            // Validar que el operando sea un identificador válido o un número
+            if (!Regex.IsMatch(operand, @"^([a-zA-Z_][a-zA-Z0-9_]*|\d+|\"".*\"")$"))
+            {
+                throw new Exception($"Error sintáctico: El operando '{operand}' no es válido.");
+            }
+        }
+
+        // Validar el incremento/decremento del ciclo `Para`
+        private void ValidateForLoopIncrement(string increment)
+        {
+            // Validar que el incremento/decremento sea válido
+            if (!Regex.IsMatch(increment, @"^\s*[a-zA-Z_][a-zA-Z0-9_]*\s*(\+\+|--|\+=|\-=|\*=|\/=)\s*\d*\s*$"))
+            {
+                throw new Exception($"Error sintáctico: El incremento/decremento del ciclo `Para` no es válido: '{increment}'");
+            }
+        }
+
+        // Método para verificar si una palabra es reservada
+        private bool IsReservedWord(string word)
         {
             HashSet<string> reservedWords = new()
-            {
-              "ent", "cad", "flot", "sn", "let", "para", "Si", "No", "True", "False", "kiara", "list"
-            };
-            // Verificar que no haya palabras reservadas
-            foreach (string word in reservedWords)
-            {
-                if (condition.Contains(word))
-                {
-                    throw new Exception($"Error: la condición contiene la palabra reservada '{word}'.");
-                }
-            }
-
-            // Verificar que las variables usadas en la condición estén declaradas localmente
-            Regex variableRegex = new(@"\b\w+\b");
-            foreach (Match match in variableRegex.Matches(condition))
-            {
-                string variable = match.Value;
-                if (!localVariables.ContainsKey(variable) && !int.TryParse(variable, out _))
-                {
-                    throw new Exception($"Error: la variable '{variable}' en la condición no está declarada.");
-                }
-            }
+    {
+        "ent", "cad", "flot", "sn", "let", "para", "Si", "No", "True", "False", "kiara", "list"
+    };
+            return reservedWords.Contains(word);
         }
-
-
-
-        private void ValidateIncrementDecrement(string update, Dictionary<string, string> localVariables)
-        {
-            // Expresión regular para soportar todas las formas de incremento/decremento:
-            // Ejemplos válidos: i++, i--, i+=1, i-=2, i*=3, i/=4, i%=5
-            Regex updateRegex = new(@"^(?<variable>\w+)\s*(?<operator>(\+\+|--|[\+\-\*/%]=))\s*(?<value>-?\d+)?$");
-            Match match = updateRegex.Match(update);
-
-            if (!match.Success)
-            {
-                throw new Exception($"Error de sintaxis en la actualización: {update}");
-            }
-
-            string variable = match.Groups["variable"].Value;
-            string operation = match.Groups["operator"].Value;
-            string value = match.Groups["value"].Value;
-
-            // Verificar que la variable esté declarada localmente
-            if (!localVariables.ContainsKey(variable))
-            {
-                throw new Exception($"Error: la variable '{variable}' en la actualización no está declarada.");
-            }
-
-            // Verificar que el valor sea un número si el operador lo requiere
-            if ((operation != "++" && operation != "--") && string.IsNullOrEmpty(value))
-            {
-                throw new Exception($"Error: se esperaba un valor numérico en la operación '{operation}' para la variable '{variable}'.");
-            }
-        }
-
-
-
-
-
 
     }
 }
