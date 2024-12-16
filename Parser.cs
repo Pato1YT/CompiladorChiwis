@@ -101,12 +101,18 @@ namespace CompiladorChiwis
                 {
                     Consume("ListDeclaration");
                 }
+                else if (CurrentToken.TokenType == "VariableAssignment")
+                {
+                    Consume("VariableAssignment");
+                }
                 else if (CurrentToken.TokenType == "Input")
                 {
                     Consume("Input");
                 }
                 else if (CurrentToken.TokenType == "Output")
                 {
+                    string condicion = ExtractConditionSalida(CurrentToken.Value);
+                    ValidarSalida(condicion);
                     Consume("Output");
                 }
                 else if (CurrentToken.TokenType == "IfStatement")
@@ -129,6 +135,8 @@ namespace CompiladorChiwis
                 }
                 else if (CurrentToken.TokenType == "ForLoop")
                 {
+                    string loopCondition = CurrentToken.Value;
+                    ValidateForLoop(loopCondition);
                     Consume("ForLoop");
                     ParseBlock(); // Procesa el bloque del `para`
                 }
@@ -155,6 +163,9 @@ namespace CompiladorChiwis
             }
         }
 
+
+
+        //Metodos que validan la condicion de (condicion) en el Si
         private void ValidateIfCondition(string condition)
         {
             // Lista de palabras reservadas
@@ -239,26 +250,211 @@ namespace CompiladorChiwis
             return match.Groups[1].Value.Trim();
         }
 
-        private void ValidateVariable(string variable)
+        private string ExtractConditionSalida(string salida)
+        {
+            var match = Regex.Match(salida, @"kiara.salida\s*\((.*)\);");
+            if (!match.Success)
+            {
+                throw new Exception($"Error sintáctico: No se pudo extraer el mensaje de `kiara.salida`: '{salida}'");
+            }
+            return match.Groups[1].Value.Trim();
+        }
+
+        private void ValidarSalida(string condicion)
         {
             // Lista de palabras reservadas
             HashSet<string> reservedWords = new()
             {
-              "ent", "cad", "flot", "sn", "let", "para", "Si", "No", "True", "False", "kiara", "list"
+               "ent", "cad", "flot", "sn", "let", "para", "Si", "No", "True", "False", "kiara", "list"
             };
 
-            // Validar que no sea una palabra reservada
-            if (reservedWords.Contains(variable))
+            // Método para validar variables
+            void ValidarVariable(string variable)
             {
-                throw new Exception($"Error sintáctico: La palabra reservada '{variable}' no puede usarse como identificador.");
+                // Verificar que no sea una palabra reservada
+                if (reservedWords.Contains(variable))
+                {
+                    throw new Exception($"Error sintáctico: La palabra reservada '{variable}' no puede usarse como identificador en '{condicion}'");
+                }
+
+                // Validar que sea un identificador válido
+                if (!Regex.IsMatch(variable, @"^[a-zA-Z_][a-zA-Z0-9_]*$"))
+                {
+                    throw new Exception($"Error sintáctico: Identificador inválido '{variable}' en '{condicion}'");
+                }
             }
 
-            // Validar que sea un identificador válido
-            if (!Regex.IsMatch(variable, @"^[a-zA-Z_][a-zA-Z0-9_]*$"))
+            // Separar por comas
+            string[] segments = condicion.Split(',');
+
+            // Validar que no haya cadenas en combinaciones con comas
+            foreach (string segment in segments)
             {
-                throw new Exception($"Error sintáctico: Identificador inválido '{variable}'.");
+                string trimmedSegment = segment.Trim();
+
+                // Si contiene operadores de concatenación (`+`), validar concatenaciones
+                if (Regex.IsMatch(trimmedSegment, @"^([a-zA-Z_][a-zA-Z0-9_]*|\"".*\"")(\s*\+\s*([a-zA-Z_][a-zA-Z0-9_]*|\"".*\""))*$"))
+                {
+                    // Separar por `+` y validar cada parte
+                    string[] parts = Regex.Split(trimmedSegment, @"\+").Where(p => !string.IsNullOrWhiteSpace(p)).ToArray();
+
+                    foreach (string part in parts)
+                    {
+                        string trimmedPart = part.Trim();
+
+                        if (trimmedPart.StartsWith("\"") && trimmedPart.EndsWith("\""))
+                        {
+                            // Validar que sea una cadena válida
+                            if (!Regex.IsMatch(trimmedPart, @"^\"".*\""$"))
+                            {
+                                throw new Exception($"Error sintáctico: Cadena inválida '{trimmedPart}' en '{condicion}'");
+                            }
+                        }
+                        else
+                        {
+                            // Validar que sea una variable válida
+                            ValidarVariable(trimmedPart);
+                        }
+                    }
+                }
+                else if (Regex.IsMatch(trimmedSegment, @"^\"".*\""$"))
+                {
+                    // Lanzar error si las cadenas están separadas por comas
+                    if (segments.Length > 1)
+                    {
+                        throw new Exception($"Error sintáctico: Las cadenas completas no pueden combinarse con comas en '{condicion}'");
+                    }
+                }
+                else if (Regex.IsMatch(trimmedSegment, @"^[a-zA-Z_][a-zA-Z0-9_]*$"))
+                {
+                    // Validar que sea una variable
+                    ValidarVariable(trimmedSegment);
+                }
+                else
+                {
+                    throw new Exception($"Error sintáctico: Segmento inválido '{trimmedSegment}' en '{condicion}'");
+                }
             }
         }
+        //NO SIRVE 
+        private void ValidateForLoop(string loopCondition)
+        {
+            // Dividir la condición completa del ciclo en inicialización, condición y actualización
+            string pattern = @"^\s*(?<init>[^;]+);\s*(?<cond>[^;]+);\s*(?<update>.+)\s*$";
+            Match match = Regex.Match(loopCondition, pattern);
+
+            if (!match.Success)
+            {
+                throw new Exception($"Error de sintaxis: la declaración del ciclo 'para' es inválida: {loopCondition}");
+            }
+
+            string initialization = match.Groups["init"].Value.Trim();
+            string condition = match.Groups["cond"].Value.Trim();
+            string update = match.Groups["update"].Value.Trim();
+
+            // Crear un diccionario local para rastrear variables dentro del ciclo
+            Dictionary<string, string> localVariables = new();
+
+            // Validar la inicialización
+            ValidateInitialization(initialization, localVariables);
+
+            // Validar la condición
+            ValidateCondition(condition, localVariables);
+
+            // Validar el incremento/decremento
+            ValidateIncrementDecrement(update, localVariables);
+        }
+
+
+
+        private void ValidateInitialization(string initialization, Dictionary<string, string> localVariables)
+        {
+            HashSet<string> reservedWords = new()
+            {
+              "ent", "cad", "flot", "sn", "let", "para", "Si", "No", "True", "False", "kiara", "list"
+            };
+            // Expresión regular para la inicialización, ejemplo: "ent i = 1"
+            Regex initRegex = new(@"^(ent)\s+(\w+)\s*=\s*(-?\d+)$");
+            Match match = initRegex.Match(initialization);
+
+            if (!match.Success)
+            {
+                throw new Exception($"Error de sintaxis en la inicialización: {initialization}");
+            }
+
+            string type = match.Groups[1].Value;
+            string variableName = match.Groups[2].Value;
+
+            // Verificar que el nombre de la variable no sea una palabra reservada
+            if (reservedWords.Contains(variableName))
+            {
+                throw new Exception($"Error: el nombre de la variable '{variableName}' es una palabra reservada.");
+            }
+
+            // Registrar la variable localmente
+            localVariables[variableName] = type;
+        }
+
+
+        private void ValidateCondition(string condition, Dictionary<string, string> localVariables)
+        {
+            HashSet<string> reservedWords = new()
+            {
+              "ent", "cad", "flot", "sn", "let", "para", "Si", "No", "True", "False", "kiara", "list"
+            };
+            // Verificar que no haya palabras reservadas
+            foreach (string word in reservedWords)
+            {
+                if (condition.Contains(word))
+                {
+                    throw new Exception($"Error: la condición contiene la palabra reservada '{word}'.");
+                }
+            }
+
+            // Verificar que las variables usadas en la condición estén declaradas localmente
+            Regex variableRegex = new(@"\b\w+\b");
+            foreach (Match match in variableRegex.Matches(condition))
+            {
+                string variable = match.Value;
+                if (!localVariables.ContainsKey(variable) && !int.TryParse(variable, out _))
+                {
+                    throw new Exception($"Error: la variable '{variable}' en la condición no está declarada.");
+                }
+            }
+        }
+
+
+
+        private void ValidateIncrementDecrement(string update, Dictionary<string, string> localVariables)
+        {
+            // Expresión regular para soportar todas las formas de incremento/decremento:
+            // Ejemplos válidos: i++, i--, i+=1, i-=2, i*=3, i/=4, i%=5
+            Regex updateRegex = new(@"^(?<variable>\w+)\s*(?<operator>(\+\+|--|[\+\-\*/%]=))\s*(?<value>-?\d+)?$");
+            Match match = updateRegex.Match(update);
+
+            if (!match.Success)
+            {
+                throw new Exception($"Error de sintaxis en la actualización: {update}");
+            }
+
+            string variable = match.Groups["variable"].Value;
+            string operation = match.Groups["operator"].Value;
+            string value = match.Groups["value"].Value;
+
+            // Verificar que la variable esté declarada localmente
+            if (!localVariables.ContainsKey(variable))
+            {
+                throw new Exception($"Error: la variable '{variable}' en la actualización no está declarada.");
+            }
+
+            // Verificar que el valor sea un número si el operador lo requiere
+            if ((operation != "++" && operation != "--") && string.IsNullOrEmpty(value))
+            {
+                throw new Exception($"Error: se esperaba un valor numérico en la operación '{operation}' para la variable '{variable}'.");
+            }
+        }
+
+
 
 
 
