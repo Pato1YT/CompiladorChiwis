@@ -167,7 +167,11 @@ namespace CompiladorChiwis
             string[] parts = Regex.Split(condition, @"(==|!=|<|>|<=|>=|&&|\|\|)").Where(p => !string.IsNullOrWhiteSpace(p)).ToArray();
 
             // Validar si hay una sola  
-            if (parts.Length == 1)
+            if (parts.Length<1)
+            {
+                throw new Exception($"Error sintáctico: La condición esta vacía 'Si (??)'");
+            }
+            else if (parts.Length == 1)
             {
                 string part = parts[0].Trim();
 
